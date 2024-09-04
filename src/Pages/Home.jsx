@@ -10,7 +10,6 @@ const Home = () => {
   return (
     <>
       <Navbar />
-        <CategoryChips />
       <div>
         <Card />
       </div>
