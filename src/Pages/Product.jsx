@@ -1,4 +1,5 @@
 import { Image } from "@nextui-org/react";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -7,9 +8,10 @@ const Product = () => {
   const [data, setdata] = useState();
 
   useEffect(() => {
-    fetch(`https://fakestoreapi.com/products/${id}`)
-      .then((res) => res.json())
-      .then((res) => setdata(res));
+    axios
+      .get(`https://fakestoreapi.com/products/${id}`)
+      .then((res) => setdata(res))
+      .catch((err) => console.log(err));
   }, []);
 
   console.log(data);
