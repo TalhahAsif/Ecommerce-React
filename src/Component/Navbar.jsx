@@ -72,7 +72,7 @@ const Navbar = () => {
               </li>
               <li>
                 <>
-                  <button
+                  <button 
                     id="dropdownAvatarNameButton"
                     data-dropdown-toggle="dropdownAvatarName"
                     className="flex items-center text-sm pe-1 font-medium text-white rounded-full hover:text-blue-600 dark:hover:text-blue-500 md:me-0 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white"
