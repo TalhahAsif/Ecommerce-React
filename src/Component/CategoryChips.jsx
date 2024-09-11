@@ -20,8 +20,8 @@ const CategoryChips = ({ onClick, category }) => {
         <div
           onClick={() => onClick("all")}
           className={`${
-            category == "all" ? "bg-gray-900" : "border border-gray-700"
-          } py-3 px-6 rounded-xl cursor-pointer hover:bg-slate-700 hover:text-white`}
+            category == "all" ? "bg-gray-900 font-extrabold text-yellow-400" : "border border-gray-700"
+          } py-3 px-6 rounded-xl cursor-pointer hover:bg-slate-700 hover:text-yellow-500`}
         >
           <p>All</p>
         </div>
@@ -30,8 +30,8 @@ const CategoryChips = ({ onClick, category }) => {
             <div
               onClick={() => onClick(chip)}
               className={`${
-                category == chip ? "bg-gray-900" : "border border-gray-700"
-              } py-3 px-6 rounded-xl cursor-pointer hover:bg-slate-700 hover:text-white`}
+                category == chip ? "bg-gray-900 font-extrabold text-yellow-400" : "border border-gray-700"
+              } py-3 px-6 rounded-xl cursor-pointer hover:bg-gray-900 hover:text-yellow-400 hover:font-extrabold`}
             >
               <p>{chip}</p>
             </div>
