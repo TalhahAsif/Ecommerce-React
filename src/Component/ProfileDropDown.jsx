@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dropdown,
   DropdownTrigger,
@@ -7,8 +7,29 @@ import {
   Avatar,
   User,
 } from "@nextui-org/react";
+import { auth } from "../firebase";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
 
 export default function ProfileDropDown() {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const logOut = () => {
+    setLoading(true);
+    signOut(auth)
+      .then(() => {
+        setLoading(false);
+        toast.success("Sign Out Successful");
+        navigate("/login");
+      })
+      .catch((error) => {
+        setLoading(false);
+        toast.error("An error happened.");
+      });
+  };
+
   return (
     <div className="flex items-center gap-4">
       <Dropdown placement="bottom-end" className="bg-slate-700">
@@ -24,19 +45,13 @@ export default function ProfileDropDown() {
             <p className="font-semibold">Signed in as</p>
             <p className="font-semibold">zoey@example.com</p>
           </DropdownItem>
-          <DropdownItem key="settings">
-            My Settings
-          </DropdownItem>
+          <DropdownItem key="settings">My Settings</DropdownItem>
           <DropdownItem key="team_settings">Team Settings</DropdownItem>
-          <DropdownItem key="analytics">
-            Analytics
-          </DropdownItem>
+          <DropdownItem key="analytics">Analytics</DropdownItem>
           <DropdownItem key="system">System</DropdownItem>
           <DropdownItem key="configurations">Configurations</DropdownItem>
-          <DropdownItem key="help_and_feedback">
-            Help & Feedback
-          </DropdownItem>
-          <DropdownItem key="logout" color="danger">
+          <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+          <DropdownItem key="logout" color="danger" onClick={logOut}>
             Log Out
           </DropdownItem>
         </DropdownMenu>

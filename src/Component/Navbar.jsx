@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -11,13 +11,24 @@ import {
 } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import ProfileDropDown from "./ProfileDropDown";
+import { auth } from "../firebase";
 // import {AcmeLogo} from "./AcmeLogo.jsx";
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const [userSignedIn, SetUserSignedIn] = useState(true);
+  const [userSignedIn, SetUserSignedIn] = useState(false);
 
   const menuItems = ["Home", "About"];
+
+  const user = auth.currentUser;
+
+  useEffect(() => {
+    if (user != null) {
+      SetUserSignedIn(true);
+    } else {
+      SetUserSignedIn(false);
+    }
+  }, []);
 
   return (
     <Navbar className="bg-transparent" onMenuOpenChange={setIsMenuOpen}>
@@ -48,10 +59,10 @@ export default function App() {
         {!userSignedIn ? (
           <>
             <NavbarItem className="hidden lg:flex">
-              <Link href="#">Login</Link>
+              <Link to={"/login"} >Login</Link>
             </NavbarItem>
             <NavbarItem>
-              <Button as={Link} color="primary" href="#" variant="flat">
+              <Button as={Link} color="primary" to={"/signUp"} variant="flat">
                 Sign Up
               </Button>
             </NavbarItem>{" "}
