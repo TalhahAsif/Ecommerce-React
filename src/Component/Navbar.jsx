@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -12,6 +12,8 @@ import {
 import { Link } from "react-router-dom";
 import ProfileDropDown from "./ProfileDropDown";
 import { auth } from "../firebase";
+import { userContext } from "../Contexts/UserContext";
+// import { onAuthStateChanged } from "firebase/auth";
 // import {AcmeLogo} from "./AcmeLogo.jsx";
 
 export default function App() {
@@ -20,15 +22,16 @@ export default function App() {
 
   const menuItems = ["Home", "About"];
 
-  const user = auth.currentUser;
+  const { user, setUser } = useContext(userContext);
 
+  // console.log(user?.email);
   useEffect(() => {
-    if (user != null) {
+    if (user) {
       SetUserSignedIn(true);
     } else {
       SetUserSignedIn(false);
     }
-  }, []);
+  }, [user]);
 
   return (
     <Navbar className="bg-transparent" onMenuOpenChange={setIsMenuOpen}>
@@ -59,7 +62,7 @@ export default function App() {
         {!userSignedIn ? (
           <>
             <NavbarItem className="hidden lg:flex">
-              <Link to={"/login"} >Login</Link>
+              <Link to={"/login"}>Login</Link>
             </NavbarItem>
             <NavbarItem>
               <Button as={Link} color="primary" to={"/signUp"} variant="flat">
@@ -71,10 +74,6 @@ export default function App() {
           <ProfileDropDown />
         )}
       </NavbarContent>
-
-      {/* Avatar */}
-
-      {/* Navbar */}
 
       <NavbarMenu className="bg-transparent">
         {menuItems.map((item, index) => (

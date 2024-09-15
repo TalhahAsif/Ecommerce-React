@@ -12,8 +12,6 @@ const Login = () => {
 
   const [loading, Setloading] = useState(false);
 
-  console.log(email, password);
-
   const navigate = useNavigate();
 
   const formHandle = (e) => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Dropdown,
   DropdownTrigger,
@@ -11,10 +11,15 @@ import { auth } from "../firebase";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
+import { userContext } from "../Contexts/UserContext";
 
 export default function ProfileDropDown() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const { user, setUser } = useContext(userContext);
+
+  // console.log(user?.email);
 
   const logOut = () => {
     setLoading(true);
@@ -43,7 +48,7 @@ export default function ProfileDropDown() {
         <DropdownMenu aria-label="Profile Actions" variant="flat">
           <DropdownItem key="profile" className="h-14 gap-2">
             <p className="font-semibold">Signed in as</p>
-            <p className="font-semibold">zoey@example.com</p>
+            <p className="font-semibold">{user?.email}</p>
           </DropdownItem>
           <DropdownItem key="settings">My Settings</DropdownItem>
           <DropdownItem key="team_settings">Team Settings</DropdownItem>

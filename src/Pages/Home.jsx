@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import About from "./About";
 import Navbar from "../Component/Navbar";
@@ -9,14 +9,18 @@ import { auth } from "../firebase";
 import { Toaster } from "sonner";
 import { onAuthStateChanged } from "firebase/auth";
 import { logEvent } from "firebase/analytics";
+import { userContext } from "../Contexts/UserContext";
 
 const Home = () => {
+  const { user, setUser } = useContext(userContext);
+
+  // console.log(user?.email);
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/auth.user
         const uid = user.uid;
+        setUser(user);
         // ...
       } else {
         // User is signed out
