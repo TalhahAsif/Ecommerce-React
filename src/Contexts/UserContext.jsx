@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 const userContext = createContext();
 
 let UserContextProvider = ({ children }) => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState([]);
 
   return (
     <div>

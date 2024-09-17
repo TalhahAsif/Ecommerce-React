@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import InputCmp from "../Component/InputCmp";
 import { Button, DateInput } from "@nextui-org/react";
 import { CalendarDate } from "@internationalized/date";
-import { auth, createUserWithEmailAndPassword } from "../firebase";
+import { auth, createUserWithEmailAndPassword, db } from "../firebase";
 import { Toaster, toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
+import { userContext } from "../Contexts/UserContext";
 
 const SignUp = () => {
   const [email, setEmail] = useState();
@@ -14,32 +16,33 @@ const SignUp = () => {
   const [phoneNumber, setphoneNumber] = useState();
   const [DOB, setDOB] = useState();
 
-  const [userDetial, setUserDetail] = useState({});
-
   const [loading, SetLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleDetail = (e) => {
     e.preventDefault();
-    setUserDetail({
+
+    const UserObj = {
       email,
-      password,
       firstName,
       lastName,
       phoneNumber,
-      DOB,
-    });
+      // DOB,
+    };
 
     SetLoading(true);
-    createUserWithEmailAndPassword(auth, userDetial.email, userDetial.password)
-      .then((userCredential) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential) => {
         // Signed up
+        console.log(userCredential);
         const user = userCredential.user;
         toast.success("Account Create Succesfully");
-        console.log(user);
         navigate("/");
         SetLoading(false);
+
+        // await setDoc(doc(db, "users", user.uid), UserObj);
+        // console.log(UserObj);
       })
       .catch((error) => {
         const errorCode = error.code;

@@ -10,20 +10,20 @@ import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import Product from "./Pages/Product";
 import { UserContextProvider } from "./Contexts/UserContext";
+import Cart from "./Pages/Cart";
 
 function App() {
   return (
     <>
-      <UserContextProvider>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signUp" element={<SignUp />} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signUp" element={<SignUp />} />
+        <Route path="/cart" element={<Cart />} />
 
-          <Route path="/product/:id" element={<Product />} />
-        </Routes>
-      </UserContextProvider>
+        <Route path="/product/:id" element={<Product />} />
+      </Routes>
     </>
   );
 }

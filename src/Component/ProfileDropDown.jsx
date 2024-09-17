@@ -19,8 +19,8 @@ export default function ProfileDropDown() {
 
   const { user, setUser } = useContext(userContext);
 
-  // console.log(user?.email);
-
+  // console.log(user);
+  
   const logOut = () => {
     setLoading(true);
     signOut(auth)
