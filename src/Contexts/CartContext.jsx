@@ -1,33 +1,47 @@
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { stringify } from "postcss";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { db } from "../firebase";
 
 const cartContext = createContext();
 
 const CartContextProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState(0);
-  
-  const addToCart = (item) => {
-    const datafromLS = localStorage.getItem("products");
-    const array = datafromLS ? JSON.parse(datafromLS) : [];
 
-    if (datafromLS) {
-      const itemIndex = array.findIndex(
-        (data) => data.product.id == item.product.id
+  const addToCart = async (items) => {
+    console.log(items);
+    try {
+      const docRef = doc(db, "cartItems", items.date);
+
+      const querySnapshot = await getDocs(
+        query(
+          collection(db, "cartItems"),
+          where("product.id", "==", items.product.id)
+        )
       );
 
-      if (itemIndex == -1) {
-        array.push(item);
-        cartItems == array.length;
-        console.log(cartItems);
+      if (querySnapshot.empty) {
+        await setDoc(docRef, items);
       } else {
-        array[itemIndex].quantity++;
+        querySnapshot.forEach(async (productDoc) => {
+          const productData = productDoc.data();
+          const newQuantity = productData.quantity + items.quantity;
+
+          await updateDoc(productDoc.ref, { quantity: newQuantity });
+          // setupdatedProductQuantity(newQuantity);
+        });
       }
+    } catch (error) {
+      console.log(error);
     }
-
-    const dataToPush = [...array];
-    const stringify = JSON.stringify(dataToPush);
-
-    localStorage.setItem("products", stringify);
   };
 
   const removeToCart = () => {};

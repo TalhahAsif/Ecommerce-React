@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import Navbar from "../Component/Navbar";
 import { userContext } from "../Contexts/UserContext";
 import { auth } from "../firebase";
-import { addProductToLS } from "../Utils/Localstorage";
 import { cartContext } from "../Contexts/CartContext";
 
 const Product = () => {
@@ -20,8 +19,8 @@ const Product = () => {
       .catch((err) => console.log(err));
   }, [id]);
 
-  const { setUser } = useContext(userContext);
-  const { addToCart, cartItem } = useContext(cartContext);
+  const { user, setUser } = useContext(userContext);
+  const { addToCart } = useContext(cartContext);
 
   useEffect(() => {
     const isUser = auth.onAuthStateChanged((user) => {
@@ -29,6 +28,8 @@ const Product = () => {
     });
     // return () => isUser;
   }, []);
+
+  // console.log(user.email);
 
   const product = data?.data;
 
@@ -159,7 +160,14 @@ const Product = () => {
                   ${product?.price}
                 </span>
                 <Button
-                  onClick={() => addToCart({ product, quantity })}
+                  onClick={() =>
+                    addToCart({
+                      product,
+                      quantity,
+                      email: user.email,
+                      date: Date.now().toString(),
+                    })
+                  }
                   className="flex ml-auto text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-lime-600 hover:text-black rounded-lg"
                 >
                   Add to Cart

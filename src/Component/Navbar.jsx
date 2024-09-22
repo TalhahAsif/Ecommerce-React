@@ -11,9 +11,10 @@ import {
 } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import ProfileDropDown from "./ProfileDropDown";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { userContext } from "../Contexts/UserContext";
 import { ShoppingCartOutlined } from "@ant-design/icons";
+import { collection, getDocs } from "firebase/firestore";
 // import { Badge } from "antd";
 // import { onAuthStateChanged } from "firebase/auth";
 // import {AcmeLogo} from "./AcmeLogo.jsx";
@@ -21,23 +22,29 @@ import { ShoppingCartOutlined } from "@ant-design/icons";
 export default function NavbarCmp({ email }) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [userSignedIn, SetUserSignedIn] = useState(false);
+  const [cartItems, setCartItems] = useState(0);
 
   const menuItems = ["Home", "About", "Cart"];
 
   const { user, setUser } = useContext(userContext);
 
-  // console.log(user, "user");
+  useEffect(() => {
+    if (user == undefined) {
+      SetUserSignedIn(false);
+    } else {
+      SetUserSignedIn(true);
+    }
+  }, [user]);
 
   useEffect(() => {
-    // const isUser = auth.onAuthStateChanged((user) => {
-    if (user) {
-      SetUserSignedIn(true);
-    } else {
-      SetUserSignedIn(false);
-    }
-    // });
-    // return () => isUser;
-  }, [user]);
+    const gettingFirebaseData = async () => {
+      const data = await getDocs(collection(db, "cartItems"));
+      const products = data.docs.map((data) => data.data());
+      setCartItems(products.length);
+    };
+
+    gettingFirebaseData();
+  }, []);
 
   return (
     <Navbar className="bg-transparent" onMenuOpenChange={setIsMenuOpen}>
@@ -75,7 +82,7 @@ export default function NavbarCmp({ email }) {
       <NavbarContent justify="end">
         <Link to={"/cart"} className="mr-5 flex">
           <ShoppingCartOutlined className="text-2xl text-yellow-300 mx-3" />
-          <p className="text-lg">1</p>
+          <p className="text-lg">{cartItems}</p>
         </Link>
         {!userSignedIn ? (
           <>

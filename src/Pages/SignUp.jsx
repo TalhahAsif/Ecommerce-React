@@ -41,8 +41,8 @@ const SignUp = () => {
         navigate("/");
         SetLoading(false);
 
-        // await setDoc(doc(db, "users", user.uid), UserObj);
-        // console.log(UserObj);
+        await setDoc(doc(db, "users", user.uid), UserObj);
+        console.log(UserObj);
       })
       .catch((error) => {
         const errorCode = error.code;
